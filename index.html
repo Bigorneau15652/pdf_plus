@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    Content Security Policy: only this site and the Grist host may provide scripts.
+    If you use another Grist server, change the host below AND in the script tag.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://grist.numerique.gouv.fr; connect-src https:; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PDF Plus</title>
+  <link rel="stylesheet" href="widget.css">
+  <script src="https://grist.numerique.gouv.fr/grist-plugin-api.js"></script>
+</head>
+<body>
+  <main id="app">
+    <div id="notice" role="status" hidden></div>
+    <p id="message"></p>
+    <ul id="list"></ul>
+  </main>
+
+  <!-- Icon cloned into every document button -->
+  <template id="icon-template">
+    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M15 3h6v6M9 21H3v-6M21 3l-9 9M3 21l9-9"/>
+    </svg>
+  </template>
+
+  <script src="shared/i18n.js"></script>
+  <script src="documents.js"></script>
+  <script src="widget.js"></script>
+</body>
+</html>

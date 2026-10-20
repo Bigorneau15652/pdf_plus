@@ -1,0 +1,69 @@
+/* Widget panel styles. Colours are explicit on every element so that the
+   operating system dark mode can never turn text invisible. */
+:root { color-scheme: light; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: #ffffff;
+  color: #1f2933;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+}
+
+#app { padding: 10px; }
+
+/* Warning banner: solid colours, wraps on narrow panels, never truncated. */
+#notice {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 2px solid #8a5a00;
+  border-radius: 6px;
+  background: #ffe08a;
+  color: #3d2800;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#notice[hidden] { display: none; }
+
+#message {
+  margin: 24px 8px;
+  color: #3e4c59;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#message:empty { display: none; }
+
+#list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.doc-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #1c5d8c;
+  border-radius: 6px;
+  background: #1c5d8c;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.doc-button:hover { background: #2a74ab; border-color: #2a74ab; }
+.doc-button:focus-visible { outline: 3px solid #f2b705; outline-offset: 2px; }
+.doc-button .icon { flex-shrink: 0; }
+
+/* The document currently shown in the reader window */
+.doc-button[aria-current="true"] { background: #0b3a5c; border-color: #f2b705; }
