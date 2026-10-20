@@ -6,7 +6,7 @@
 
   const READER_WINDOW_NAME = `pdf-plus-reader`;
   // The version in the address makes browsers fetch a fresh reader after each release.
-  const READER_URL = new URL(`viewer.html?v=0.2.0`, location.href).href;
+  const READER_URL = new URL(`viewer.html?v=0.3.0`, location.href).href;
   const HANDSHAKE_INTERVAL_MS = 200;
   const MAX_SAMPLES = 3;
 
@@ -137,8 +137,8 @@
     return `${state.token.baseUrl}/attachments/${id}/download?auth=${state.token.token}`;
   }
 
-  async function fetchAttachment(id) {
-    const response = await fetch(await attachmentUrl(id));
+  async function fetchAttachment(address) {
+    const response = await fetch(address);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.arrayBuffer();
   }
@@ -160,29 +160,34 @@
       return;
     }
 
-    // An attachment is read here and handed over to our reader page.
+    // An attachment is read here and handed over to our reader page. Grist only gives the
+    // download token to widgets that have full access to the document.
+    let address;
+    try {
+      address = await attachmentUrl(doc.id);
+    } catch {
+      setActionNotice(t(`needFullAccess`));
+      return;
+    }
+
     let buffer;
     try {
-      const bytes = fetchAttachment(doc.id);
+      const bytes = fetchAttachment(address);
       const ready = await connectReader();
       if (!ready) throw new Error(`reader did not answer`);
       buffer = await bytes;
     } catch {
       // Last resort: let the browser open the file with its own PDF viewer.
-      try {
-        navigateReader(await attachmentUrl(doc.id), `external`);
-        setActionNotice(t(`attachmentFallback`));
-        markShown(doc.key);
-      } catch {
-        setActionNotice(t(`readerLost`));
-      }
+      navigateReader(address, `external`);
+      setActionNotice(t(`attachmentFallback`));
+      markShown(doc.key);
       return;
     }
     // A newer click or row change took over while we were waiting.
     if (ticket !== state.openCounter) return;
 
     state.readerWindow.postMessage(
-      { type: `pdfplus:open`, label: doc.label, page: doc.page, buffer },
+      { type: `pdfplus:open`, label: doc.label, buffer },
       location.origin,
       [buffer]
     );
@@ -280,13 +285,6 @@
         title: t(`columnNames`),
         description: t(`columnNamesHelp`),
         type: `Text`,
-        optional: true
-      },
-      {
-        name: `page`,
-        title: t(`columnPage`),
-        description: t(`columnPageHelp`),
-        type: `Int,Numeric`,
         optional: true
       }
     ]
