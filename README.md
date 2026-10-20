@@ -68,7 +68,7 @@ Une pièce jointe PDF de Grist est lue par le lecteur intégré (PDF.js) : minia
 1. Sur GitHub, ouvrez le dépôt, puis Settings, puis Pages. Sous Source, choisissez « Deploy from a branch », la branche `main` et le dossier `/ (root)`, puis cliquez sur Save. Attendez une à deux minutes.
 2. L'adresse du widget est `https://VOTRE-COMPTE.github.io/pdf_plus/index.html`.
 3. Dans Grist : Ajouter, puis Ajouter une page, puis choisissez Personnalisée. Collez l'adresse du widget et donnez-lui l'accès en lecture à la table.
-4. Dans le panneau de droite, sous le niveau d'accès, choisissez la colonne des documents (obligatoire), la colonne des noms et la colonne de la page (facultatives).
+4. Dans le panneau de droite, sous le niveau d'accès, choisissez la colonne des pièces jointes et/ou la colonne des liens (au moins une), puis les colonnes des noms et de la page (facultatives).
 
 Si votre serveur Grist n'est pas `grist.numerique.gouv.fr`, modifiez deux endroits dans `index.html` : l'adresse du script `grist-plugin-api.js` et l'hôte indiqué dans la ligne Content-Security-Policy située juste au-dessus.
 
