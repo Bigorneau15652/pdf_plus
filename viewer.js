@@ -70,7 +70,7 @@
     el.searchCount.textContent = ``;
   }
 
-  async function openPdf(buffer, label, page) {
+  async function openPdf(buffer, label) {
     releaseCurrent();
     showError(null);
     el.placeholder.hidden = true;
@@ -111,11 +111,8 @@
     el.pageTotal.textContent = t(`pageTotal`, { total: pdf.numPages });
     el.pageInput.max = String(pdf.numPages);
 
-    // Open on the requested page once PDF.js knows the page sizes.
-    eventBus.on(`pagesinit`, () => {
-      pdfViewer.currentScaleValue = `page-width`;
-      if (page && page <= pdf.numPages) pdfViewer.currentPageNumber = page;
-    }, { once: true });
+    // Fit the page width once PDF.js knows the page sizes.
+    eventBus.on(`pagesinit`, () => { pdfViewer.currentScaleValue = `page-width`; }, { once: true });
     pdfViewer.setDocument(pdf);
     linkService.setDocument(pdf, null);
 
@@ -336,8 +333,7 @@
         event.source.postMessage({ type: `pdfplus:ready` }, event.origin);
       } else if (message.type === `pdfplus:open` && message.buffer instanceof ArrayBuffer) {
         const label = String(message.label || `PDF`).slice(0, MAX_LABEL_LENGTH);
-        const page = Number.isInteger(message.page) && message.page > 0 ? message.page : null;
-        openPdf(message.buffer, label, page);
+        openPdf(message.buffer, label);
       }
     } catch {
       // A malformed message must never break the reader.

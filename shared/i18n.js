@@ -8,10 +8,8 @@
       columnAttachmentsHelp: `Colonne de type Pièces jointes`,
       columnLinks: `Liens (un par ligne)`,
       columnLinksHelp: `Colonne de type Texte contenant des liens https, un par ligne`,
-      columnNames: `Noms des boutons`,
-      columnNamesHelp: `Un nom par ligne : d'abord les pièces jointes, puis les liens`,
-      columnPage: `Page à ouvrir`,
-      columnPageHelp: `Numéro de page, appliqué au document ouvert`,
+      columnNames: `Noms des boutons (pièces jointes puis liens)`,
+      columnNamesHelp: `Un nom par ligne, dans cet ordre : d'abord le nom de chaque pièce jointe, puis le nom de chaque lien. Exemple : ligne 1 = première pièce jointe, ligne 2 = premier lien.`,
 
       // Widget messages
       pickRow: `Sélectionnez une ligne du tableau.`,
@@ -23,11 +21,10 @@
       andOthers: `{examples} et {rest} autres`,
       popupBlocked: `Le navigateur a bloqué la fenêtre. Autorisez les fenêtres surgissantes pour ce site puis cliquez de nouveau sur le bouton.`,
       attachmentFallback: `Lecture de la pièce jointe impossible dans le lecteur intégré : le document est ouvert directement par le navigateur.`,
-      readerLost: `La fenêtre du lecteur ne répond pas. Fermez-la puis cliquez de nouveau sur le bouton.`,
+      needFullAccess: `Les pièces jointes ne peuvent être lues qu'avec l'accès complet au document. Dans le panneau de droite, réglez le niveau d'accès sur « Accès complet au document ». Les liens fonctionnent avec la lecture de la table.`,
 
       // Reader
       readerWaiting: `En attente d'un document depuis Grist. Cliquez sur un bouton dans le widget.`,
-      readerLoading: `Chargement du document…`,
       toggleSidebar: `Afficher ou masquer le panneau latéral`,
       tabThumbnails: `Miniatures`,
       tabOutline: `Chapitres`,
@@ -62,10 +59,8 @@
       columnAttachmentsHelp: `Column of type Attachments`,
       columnLinks: `Links (one per line)`,
       columnLinksHelp: `Text column holding https links, one per line`,
-      columnNames: `Button names`,
-      columnNamesHelp: `One name per line: attachments first, then links`,
-      columnPage: `Page to open`,
-      columnPageHelp: `Page number, applied to the document being opened`,
+      columnNames: `Button names (attachments then links)`,
+      columnNamesHelp: `One name per line, in this order: first the name of each attachment, then the name of each link. Example: line 1 = first attachment, line 2 = first link.`,
 
       pickRow: `Select a row in the table.`,
       needMapping: `In the right-hand panel, under the access level, choose the attachments column or the links column.`,
@@ -76,10 +71,9 @@
       andOthers: `{examples} and {rest} more`,
       popupBlocked: `The browser blocked the window. Allow pop-ups for this site then click the button again.`,
       attachmentFallback: `The attachment cannot be read by the built-in reader: the browser opens the document directly.`,
-      readerLost: `The reader window is not responding. Close it then click the button again.`,
+      needFullAccess: `Attachments can only be read with full document access. In the right-hand panel, set the access level to "Full document access". Links work with read-table access.`,
 
       readerWaiting: `Waiting for a document from Grist. Click a button in the widget.`,
-      readerLoading: `Loading the document…`,
       toggleSidebar: `Show or hide the side panel`,
       tabThumbnails: `Thumbnails`,
       tabOutline: `Chapters`,
