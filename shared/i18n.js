@@ -4,16 +4,18 @@
   const dictionaries = {
     fr: {
       // Column mapping shown in the Grist creator panel
-      columnDocuments: `Documents (liens ou pièces jointes)`,
-      columnDocumentsHelp: `Liens https (un par ligne) ou pièces jointes PDF`,
+      columnAttachments: `Pièces jointes (PDF)`,
+      columnAttachmentsHelp: `Colonne de type Pièces jointes`,
+      columnLinks: `Liens (un par ligne)`,
+      columnLinksHelp: `Colonne de type Texte contenant des liens https, un par ligne`,
       columnNames: `Noms des boutons`,
-      columnNamesHelp: `Un nom par ligne, dans le même ordre que les documents`,
+      columnNamesHelp: `Un nom par ligne : d'abord les pièces jointes, puis les liens`,
       columnPage: `Page à ouvrir`,
       columnPageHelp: `Numéro de page, appliqué au document ouvert`,
 
       // Widget messages
       pickRow: `Sélectionnez une ligne du tableau.`,
-      needMapping: `Dans le panneau de droite, sous le niveau d'accès, choisissez la colonne qui contient les documents.`,
+      needMapping: `Dans le panneau de droite, sous le niveau d'accès, choisissez la colonne des pièces jointes ou la colonne des liens.`,
       noDocuments: `Aucun document pour cette ligne.`,
       documentN: `Document {n}`,
       openTitle: `Ouvrir dans la fenêtre du lecteur`,
@@ -56,15 +58,17 @@
       errorGeneric: `Le document n'a pas pu être ouvert : {reason}`
     },
     en: {
-      columnDocuments: `Documents (links or attachments)`,
-      columnDocumentsHelp: `https links (one per line) or PDF attachments`,
+      columnAttachments: `Attachments (PDF)`,
+      columnAttachmentsHelp: `Column of type Attachments`,
+      columnLinks: `Links (one per line)`,
+      columnLinksHelp: `Text column holding https links, one per line`,
       columnNames: `Button names`,
-      columnNamesHelp: `One name per line, in the same order as the documents`,
+      columnNamesHelp: `One name per line: attachments first, then links`,
       columnPage: `Page to open`,
       columnPageHelp: `Page number, applied to the document being opened`,
 
       pickRow: `Select a row in the table.`,
-      needMapping: `In the right-hand panel, under the access level, choose the column that holds the documents.`,
+      needMapping: `In the right-hand panel, under the access level, choose the attachments column or the links column.`,
       noDocuments: `No document for this row.`,
       documentN: `Document {n}`,
       openTitle: `Open in the reader window`,
