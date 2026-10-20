@@ -5,7 +5,8 @@
   const { parseDocuments } = window.pdfPlusDocuments;
 
   const READER_WINDOW_NAME = `pdf-plus-reader`;
-  const READER_URL = new URL(`viewer.html`, location.href).href;
+  // The version in the address makes browsers fetch a fresh reader after each release.
+  const READER_URL = new URL(`viewer.html?v=0.2.0`, location.href).href;
   const HANDSHAKE_INTERVAL_MS = 200;
   const MAX_SAMPLES = 3;
 

@@ -43,6 +43,10 @@ When a row has both, the buttons list the attachments first, then the links.
 - Known trade-off: the reader window keeps its link to the widget (`window.opener`). Grist runs widgets in a sandboxed frame, which may only navigate windows it opened itself, so this link cannot be cut. A drive page opened in that window could in theory redirect the widget frame; only open links you trust.
 - If the built-in reader cannot fetch an attachment, the browser opens it directly with a short-lived read-only Grist token in the address.
 
+### Releasing a change
+
+Browsers keep GitHub Pages files for about ten minutes. The pages reference their scripts with `?v=0.2.0`: change that number in `index.html`, `viewer.html` and `widget.js` (READER_URL) with every release so that users get the new files at once.
+
 ### Update PDF.js
 
 Replace the files listed in `vendor/pdfjs/VENDOR.md` with those of the new `pdfjs-dist` release, then test the reader again.
