@@ -58,47 +58,44 @@
   }
 
   // Main entry point.
-  //   value:      raw cell value (array of attachment ids, or text with one link per line)
-  //   namesValue: raw value of the names column (one name per line), may be undefined
-  //   pageValue:  raw value of the page column, may be undefined
-  //   attachmentLabel: function (n) => default label of the n-th attachment
-  // Returns { documents, rejected } where rejected lists the values that were ignored.
-  function parseDocuments(value, namesValue, pageValue, attachmentLabel) {
+  //   cells.attachments: raw value of the attachments column (array of ids), may be undefined
+  //   cells.links:       raw value of the links column (text, one https link per line)
+  //   cells.names:       raw value of the names column (one name per line)
+  //   cells.page:        raw value of the page column
+  //   attachmentLabel:   function (n) => default label of the n-th attachment
+  // Documents come out in a fixed order: attachments first, then links. Line N of the
+  // names column names the N-th document of that order.
+  // Returns { documents, rejected } where rejected lists the ignored values with the
+  // column they came from (`attachments` or `links`).
+  function parseDocuments(cells, attachmentLabel) {
     const documents = [];
     const rejected = [];
-    const names = splitLines(namesValue);
-    const columnPage = normalizePage(pageValue);
+    const names = splitLines(cells.names);
+    const columnPage = normalizePage(cells.page);
+    let position = 0;
+    let attachmentCount = 0;
 
-    // Attachments: Grist gives an array of numeric ids (sometimes preceded by a marker).
-    if (Array.isArray(value)) {
-      const ids = value.filter((id) => Number.isInteger(id) && id > 0);
-      ids.forEach((id, index) => {
-        documents.push({
-          kind: `attachment`,
-          id,
-          label: cleanLabel(names[index]) || attachmentLabel(index + 1),
-          page: columnPage,
-          key: `attachment:${id}:${columnPage || ``}`
-        });
+    // Adds one attachment. Grist gives numeric ids, sometimes preceded by a marker.
+    function addAttachment(id) {
+      attachmentCount += 1;
+      documents.push({
+        kind: `attachment`,
+        id,
+        label: cleanLabel(names[position]) || attachmentLabel(attachmentCount),
+        page: columnPage,
+        key: `attachment:${id}:${columnPage || ``}`
       });
-      return { documents, rejected };
+      position += 1;
     }
 
-    // Empty cell: nothing to show and nothing to report.
-    if (value === null || value === undefined || value === ``) return { documents, rejected };
-
-    // Any other non-text value cannot be a document.
-    if (typeof value !== `string`) {
-      rejected.push(sample(String(value)));
-      return { documents, rejected };
-    }
-
-    // Links: one per line, line N is named by line N of the names column.
-    splitLines(value).forEach((line, index) => {
+    // Adds one link line, or reports it. Blank lines keep their place for the names.
+    function addLinkLine(line, source) {
+      const index = position;
+      position += 1;
       if (!line) return;
       const url = parseHttpsUrl(line);
       if (!url) {
-        rejected.push(sample(line));
+        rejected.push({ text: sample(line), source });
         return;
       }
       const page = pageFromHash(url.hash) || columnPage;
@@ -111,7 +108,23 @@
         page,
         key: `link:${url.href}`
       });
-    });
+    }
+
+    // Reads one column. A text found in the attachments column (a link pasted there) is
+    // still understood, so older documents keep working.
+    function readColumn(value, source) {
+      if (value === null || value === undefined || value === ``) return;
+      if (Array.isArray(value)) {
+        value.filter((id) => Number.isInteger(id) && id > 0).forEach(addAttachment);
+      } else if (typeof value === `string`) {
+        splitLines(value).forEach((line) => addLinkLine(line, source));
+      } else {
+        rejected.push({ text: sample(String(value)), source });
+      }
+    }
+
+    readColumn(cells.attachments, `attachments`);
+    readColumn(cells.links, `links`);
     return { documents, rejected };
   }
 

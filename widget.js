@@ -217,12 +217,12 @@
   }
 
   // Describes the ignored values: which column to check and a few examples.
-  function rejectedNotice(rejected, columnName) {
-    const shown = rejected.slice(0, MAX_SAMPLES).join(` ; `);
+  function rejectedNotice(rejected, mapping) {
+    const shown = rejected.slice(0, MAX_SAMPLES).map((item) => item.text).join(` ; `);
     const rest = rejected.length - MAX_SAMPLES;
     return t(`rejectedValues`, {
       count: rejected.length,
-      column: columnName,
+      column: mapping[rejected[0].source],
       examples: rest > 0 ? t(`andOthers`, { examples: shown, rest }) : shown
     });
   }
@@ -236,16 +236,13 @@
 
   // Called by Grist each time the selected row (or its content) changes.
   function onRecord(record, mapping) {
-    const row = record ? grist.mapColumnNames(record) : null;
     if (!record) return showEmpty(t(`pickRow`));
-    if (!row) return showEmpty(t(`needMapping`));
+    const row = grist.mapColumnNames(record);
+    if (!row || !mapping || !(mapping.attachments || mapping.links)) return showEmpty(t(`needMapping`));
 
-    const { documents, rejected } = parseDocuments(
-      row.documents, row.names, row.page,
-      (n) => t(`documentN`, { n })
-    );
+    const { documents, rejected } = parseDocuments(row, (n) => t(`documentN`, { n }));
     renderButtons(documents);
-    state.rejectedNotice = rejected.length ? rejectedNotice(rejected, mapping.documents) : ``;
+    state.rejectedNotice = rejected.length ? rejectedNotice(rejected, mapping) : ``;
     refreshNotice();
     setMessage(documents.length || rejected.length ? `` : t(`noDocuments`));
 
@@ -264,10 +261,18 @@
     requiredAccess: `read table`,
     columns: [
       {
-        name: `documents`,
-        title: t(`columnDocuments`),
-        description: t(`columnDocumentsHelp`),
-        type: `Attachments,Text`
+        name: `attachments`,
+        title: t(`columnAttachments`),
+        description: t(`columnAttachmentsHelp`),
+        type: `Attachments`,
+        optional: true
+      },
+      {
+        name: `links`,
+        title: t(`columnLinks`),
+        description: t(`columnLinksHelp`),
+        type: `Text`,
+        optional: true
       },
       {
         name: `names`,
