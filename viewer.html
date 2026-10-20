@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    Strict policy: the reader loads nothing from the network. PDF.js is served by this
+    site, and documents arrive from the widget through postMessage.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; frame-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PDF Plus</title>
+  <link rel="stylesheet" href="vendor/pdfjs/pdf_viewer.css">
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+  <div id="app">
+    <header id="toolbar">
+      <button type="button" id="btn-sidebar" class="tool" data-i18n-title="toggleSidebar">&#9776;</button>
+      <span id="doc-title"></span>
+
+      <span class="group">
+        <button type="button" id="btn-prev" class="tool" data-i18n-title="previousPage">&#8249;</button>
+        <input type="number" id="page-input" min="1" value="1" data-i18n-title="pageLabel">
+        <span id="page-total"></span>
+        <button type="button" id="btn-next" class="tool" data-i18n-title="nextPage">&#8250;</button>
+      </span>
+
+      <span class="group">
+        <button type="button" id="btn-zoom-out" class="tool" data-i18n-title="zoomOut">&minus;</button>
+        <select id="zoom-select" data-i18n-title="zoomLevel">
+          <option value="auto" data-i18n="zoomAuto"></option>
+          <option value="page-width" data-i18n="zoomPageWidth"></option>
+          <option value="page-fit" data-i18n="zoomPageFit"></option>
+          <option value="0.5">50 %</option>
+          <option value="0.75">75 %</option>
+          <option value="1">100 %</option>
+          <option value="1.25">125 %</option>
+          <option value="1.5">150 %</option>
+          <option value="2">200 %</option>
+          <option value="3">300 %</option>
+          <option value="custom" id="zoom-custom" hidden></option>
+        </select>
+        <button type="button" id="btn-zoom-in" class="tool" data-i18n-title="zoomIn">+</button>
+      </span>
+
+      <span class="group">
+        <button type="button" id="btn-rotate-left" class="tool" data-i18n-title="rotateLeft">&#8634;</button>
+        <button type="button" id="btn-rotate-right" class="tool" data-i18n-title="rotateRight">&#8635;</button>
+      </span>
+
+      <span class="group">
+        <input type="search" id="search-input" data-i18n-placeholder="searchPlaceholder" data-i18n-title="searchPlaceholder">
+        <button type="button" id="btn-search-prev" class="tool" data-i18n-title="searchPrevious">&uarr;</button>
+        <button type="button" id="btn-search-next" class="tool" data-i18n-title="searchNext">&darr;</button>
+        <span id="search-count" role="status"></span>
+      </span>
+
+      <span class="group">
+        <button type="button" id="btn-download" class="tool text" data-i18n="download"></button>
+        <button type="button" id="btn-print" class="tool text" data-i18n="print"></button>
+      </span>
+    </header>
+
+    <div id="error" role="alert" hidden></div>
+
+    <div id="body">
+      <aside id="sidebar" hidden>
+        <div id="tabs" role="tablist">
+          <button type="button" role="tab" id="tab-thumbnails" aria-selected="true" data-i18n="tabThumbnails"></button>
+          <button type="button" role="tab" id="tab-outline" aria-selected="false" data-i18n="tabOutline"></button>
+        </div>
+        <div id="panel-thumbnails" class="panel" role="tabpanel"></div>
+        <div id="panel-outline" class="panel" role="tabpanel" hidden></div>
+      </aside>
+
+      <main id="stage">
+        <div id="viewerContainer"><div id="viewer" class="pdfViewer"></div></div>
+        <p id="placeholder" data-i18n="readerWaiting"></p>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared/i18n.js"></script>
+  <script src="viewer.js"></script>
+</body>
+</html>
