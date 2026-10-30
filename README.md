@@ -45,7 +45,7 @@ When a row has both, the buttons list the attachments first, then the links.
 
 ### Releasing a change
 
-Browsers keep GitHub Pages files for about ten minutes. The pages reference their scripts with `?v=0.3.0`: change that number in `index.html`, `viewer.html` and `widget.js` (READER_URL) with every release so that users get the new files at once.
+Browsers keep GitHub Pages files for about ten minutes. The pages reference their scripts with `?v=0.3.1`: change that number in `index.html`, `viewer.html` and `widget.js` (READER_URL) with every release so that users get the new files at once.
 
 ### Update PDF.js
 

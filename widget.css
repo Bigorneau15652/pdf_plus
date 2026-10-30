@@ -12,7 +12,9 @@ html, body {
   font-size: 14px;
 }
 
-#app { padding: 10px; }
+/* The panel fills the height of the widget: the list of documents (or the message) sits in the middle of it, the
+   warning banner stays at the top. */
+#app { display: flex; flex-direction: column; min-height: 100vh; padding: 10px; }
 
 /* Warning banner: solid colours, wraps on narrow panels, never truncated. */
 #notice {
@@ -30,7 +32,7 @@ html, body {
 #notice[hidden] { display: none; }
 
 #message {
-  margin: 24px 8px;
+  margin: auto 8px;
   color: #3e4c59;
   font-size: 14px;
   line-height: 1.5;
@@ -40,11 +42,23 @@ html, body {
 }
 #message:empty { display: none; }
 
-#list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+/* The buttons form a block of limited width, centred in the widget in both directions. */
+#list {
+  list-style: none;
+  margin: auto;
+  padding: 0;
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#list:empty { display: none; }
 
 .doc-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   width: 100%;
   padding: 10px 14px;
@@ -56,7 +70,7 @@ html, body {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
-  text-align: left;
+  text-align: center;
   white-space: normal;
   overflow-wrap: anywhere;
   cursor: pointer;
